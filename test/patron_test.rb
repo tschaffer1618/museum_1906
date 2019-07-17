@@ -22,6 +22,4 @@ class PatronTest < Minitest::Test
     @bob.add_interest("Gems and Minerals")
     assert_equal ["Dead Sea Scrolls", "Gems and Minerals"], @bob.interests
   end 
-
-
 end

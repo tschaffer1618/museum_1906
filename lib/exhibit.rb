@@ -5,5 +5,4 @@ class Exhibit
     @name = name
     @cost = cost
   end
-
 end

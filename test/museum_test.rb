@@ -10,8 +10,9 @@ class MuseumTest < Minitest::Test
     @gems_and_minerals = Exhibit.new("Gems and Minerals", 0)
     @dead_sea_scrolls = Exhibit.new("Dead Sea Scrolls", 10)
     @imax = Exhibit.new("IMAX", 15)
-    @bob = Patron.new("Bob", 20)
+    @bob = Patron.new("Bob", 10)
     @sally = Patron.new("Sally", 20)
+    @tj = Patron.new("TJ", 7)
   end
 
   def test_it_exists
@@ -22,6 +23,7 @@ class MuseumTest < Minitest::Test
     assert_equal "Denver Museum of Nature and Science", @dmns.name
     assert_equal [], @dmns.exhibits
     assert_equal [], @dmns.patrons
+    assert_equal 0, @dmns.revenue
   end
 
   def test_add_exhibits
@@ -43,9 +45,21 @@ class MuseumTest < Minitest::Test
   end
 
   def test_admit_patrons
+    @tj.add_interest("IMAX")
+    @tj.add_interest("Dead Sea Scrolls")
+    @dmns.admit(@tj)
+    # @dmns.admit(@sally)
+    assert_equal [@tj], @dmns.patrons
+    assert_equal 7, @tj.spending_money
+    assert_equal 0, @dmns.revenue
+    @bob.add_interest("Dead Sea Scrolls")
+    @bob.add_interest("IMAX")
     @dmns.admit(@bob)
-    @dmns.admit(@sally)
-    assert_equal [@bob, @sally], @dmns.patrons
+
+    assert_equal [@tj, @bob], @dmns.patrons
+    assert_equal 0, @bob.spending_money
+    assert_equal 10, @dmns.revenue
+
   end
 
   def test_patrons_interested_in_exhibit
@@ -78,8 +92,4 @@ class MuseumTest < Minitest::Test
       }
     assert_equal expected, @dmns.patrons_by_exhibit_interest
   end
-
-
-
-
 end
